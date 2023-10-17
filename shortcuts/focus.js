@@ -118,7 +118,7 @@ const focus = [
   // ['t', HYPER, ['Hyper', false, false, false, launchHyper, callbackHyper]],
   ["t", HYPER, ["iTerm", false, false, false, launchiTerm, callbackiTerm]],
   ["f", HYPER, ["Finder", false, false, false, launchFinder]],
-  ["g", HYPER, ["Tower"]],
+  // ["g", HYPER, ["Tower"]],
 ];
 
 setKeysHandler(focusWindow, focus);
