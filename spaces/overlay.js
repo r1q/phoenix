@@ -1,21 +1,18 @@
-
 /* OVERLAY */
 
 //TODO: Document this
 //TODO: Add an icon showing `currentIndex/totalLength`
 
-setEventHandler ( 'spaceDidChange', () => {
+// setEventHandler("spaceDidChange", () => {
+//   if (!spacesListRaw || !spacesListRaw.items) return;
 
-  if ( !spacesListRaw || !spacesListRaw.items ) return;
+//   const space = Space.active();
+//   const index = getSpaceIndex(space);
 
-  const space = Space.active ();
-  const index = getSpaceIndex ( space );
+//   if (index === -1) return;
 
-  if ( index === -1 ) return;
-
-  modalScreen ({
-    text: _.get ( spacesListRaw, ['items', index, 'title'], 'Full Screen' ),
-    duration: SPACES_OVERLAY_DURATION
-  });
-
-});
+//   modalScreen({
+//     text: _.get(spacesListRaw, ["items", index, "title"], "Full Screen"),
+//     duration: SPACES_OVERLAY_DURATION,
+//   });
+// });

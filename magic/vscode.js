@@ -1,18 +1,15 @@
-
 /* VSCODE */
 
-setEventHandler ( 'windowDidOpen', magicVSCodeOpen );
+setEventHandler("windowDidOpen", magicVSCodeOpen);
 
 /* HELPERS */
 
-function magicVSCodeOpen ( window ) {
+function magicVSCodeOpen(window) {
+  if (!window.isNormal() || !window.isMain()) return;
 
-  if ( !window.isNormal () || !window.isMain () ) return;
+  const name = window.app().name();
 
-  const name = window.app ().name ();
+  if (!/Code/.test(name)) return;
 
-  if ( !/Code/.test ( name ) ) return;
-
-  setFrame ( 'right', window );
-
+  setFrame("right", window);
 }

@@ -9,18 +9,13 @@
           "from": {
             "key_code": "caps_lock",
             "modifiers": {
-              "optional": [
-                "any"
-              ]
+              "optional": ["any"]
             }
           },
           "to": [
             {
               "key_code": "left_command",
-              "modifiers": [
-                "left_control",
-                "left_option"
-              ]
+              "modifiers": ["left_control", "left_option"]
             }
           ],
           "to_if_alone": [

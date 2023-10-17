@@ -1,15 +1,15 @@
-/* CHROME */
+/* BRAVE */
 
-setEventHandler("windowDidOpen", magicChromeOpen);
+setEventHandler("windowDidOpen", magicBraveOpen);
 
 /* HELPERS */
 
-function magicChromeOpen(window) {
+function magicBraveOpen(window) {
   if (!window.isNormal() || !window.isMain()) return;
 
   const name = window.app().name();
 
-  if (!/Google Chrome/.test(name)) return;
+  if (!/Brave Browser/.test(name)) return;
 
   const title = window.title();
 

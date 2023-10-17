@@ -1,31 +1,26 @@
-
 /* CENTER */
 
-setKeyHandler ( 'x', HYPER, () => {
+setKeyHandler("x", HYPER, () => {
+  const window = Window.focused();
 
-  const window = Window.focused ();
+  if (!window) return;
 
-  if ( !window ) return;
-
-  centerWindow ( window );
-
+  centerWindow(window);
 });
 
-setKeyHandler ( 'x', HYPER_SHIFT, () => {
+setKeyHandler("x", HYPER_SHIFT, () => {
+  const window = Window.focused();
 
-  const window = Window.focused ();
+  if (!window) return;
 
-  if ( !window ) return;
+  const frame = window.frame();
 
-  const frame = window.frame ();
-
-  window.setFrame ({
+  window.setFrame({
     x: frame.x,
     y: frame.y,
     width: CENTER_WIDTH,
-    height: CENTER_HEIGHT
+    height: CENTER_HEIGHT,
   });
 
-  centerWindow ( window );
-
+  centerWindow(window);
 });

@@ -1,10 +1,9 @@
+//TODO: This is a placeholder bare-bones implementation of a Spotlight-like input modal, but it can't be implemented because input modals are too buggy as of today
 
-/* HELPERS */
-
-const ICON_GRAY = Image.fromFile ( '~/.config/phoenix/icons/search_gray.png' );
-const ICON_GREEN = Image.fromFile ( '~/.config/phoenix/icons/search_green.png' );
-const ICON_YELLOW = Image.fromFile ( '~/.config/phoenix/icons/search_yellow.png' );
-const ICON_RED = Image.fromFile ( '~/.config/phoenix/icons/search_red.png' );
+const ICON_GRAY = Image.fromFile("~/.config/phoenix/icons/search_gray.png");
+const ICON_GREEN = Image.fromFile("~/.config/phoenix/icons/search_green.png");
+const ICON_YELLOW = Image.fromFile("~/.config/phoenix/icons/search_yellow.png");
+const ICON_RED = Image.fromFile("~/.config/phoenix/icons/search_red.png");
 
 const STATE = {};
 
@@ -14,134 +13,108 @@ const STATE = {};
 //TODO: Improve ranking, with better search
 
 const onToggle = () => {
-
-  if ( STATE.modal ) {
-
-    onClose ();
-
+  if (STATE.modal) {
+    onClose();
   } else {
-
-    onOpen ();
-
+    onOpen();
   }
-
 };
 
-const onOpen = () => { //TODO: Maybe make an helper out of most of this
+const onOpen = () => {
+  //TODO: Maybe make an helper out of most of this
 
-  const screen = getFocusedScreen ();
-  const frame = screen.frame ();
+  const screen = getFocusedScreen();
+  const frame = screen.frame();
 
-  STATE.time = Date.now ();
-  STATE.window = Window.focused ();
+  STATE.time = Date.now();
+  STATE.window = Window.focused();
 
-  STATE.modal = Modal.build ({
+  STATE.modal = Modal.build({
     weight: MODAL_WEIGHT,
     animationDuration: MODAL_INPUT_ANIMATION_DURATION,
-    appearance: 'dark',
+    appearance: "dark",
     // inputPlaceholder: 'Search...',
     isInput: true,
     icon: ICON_GRAY,
-    origin ( mFrame ) {
+    origin(mFrame) {
       return {
-        x: frame.x + ( frame.width / 2 ) - ( mFrame.width / 2 ),
-        y: frame.y + ( frame.height / 2 ) - ( mFrame.height / 2 )
+        x: frame.x + frame.width / 2 - mFrame.width / 2,
+        y: frame.y + frame.height / 2 - mFrame.height / 2,
       };
     },
-    textDidChange: onSearch
+    textDidChange: onSearch,
   });
 
-  STATE.modal.show ();
+  STATE.modal.show();
 
-  STATE.onExitId = Key.on ( 'escape', [], onEscape );
-  STATE.onEnterId = Key.on ( 'return', [], onEnter );
-
+  STATE.onExitId = Key.on("escape", [], onEscape);
+  STATE.onEnterId = Key.on("return", [], onEnter);
 };
 
 const onClose = () => {
-
-  STATE.modal.close ();
+  STATE.modal.close();
   STATE.modal = undefined;
 
   STATE.apps = [];
 
-  STATE.window?.focus ();
+  STATE.window?.focus();
   STATE.window = undefined;
 
-  Key.off ( STATE.onExitId );
-  Key.off ( STATE.onEnterId );
-
+  Key.off(STATE.onExitId);
+  Key.off(STATE.onEnterId);
 };
 
-const onBlur = () => { //FIXME: This event isn't fired after the first one, for some reason
+const onBlur = () => {
+  //FIXME: This event isn't fired after the first one, for some reason
 
-  if ( !STATE.modal ) return;
+  if (!STATE.modal) return;
 
-  if ( STATE.time > ( Date.now () - 100 ) ) return;
+  if (STATE.time > Date.now() - 100) return;
 
-  onClose ();
-
+  onClose();
 };
 
-const onSearch = query => {
-
-  if ( !query ) {
-
-    STATE.query = '';
+const onSearch = (query) => {
+  if (!query) {
+    STATE.query = "";
 
     STATE.apps = [];
 
     STATE.modal.icon = ICON_GRAY;
-
   } else {
-
-    const apps = STATE.query && STATE.apps && query.startsWith ( STATE.query ) ? STATE.apps : getApps (); // Narrowing down the search space with longer queries
+    const apps = STATE.query && STATE.apps && query.startsWith(STATE.query) ? STATE.apps : getApps(); // Narrowing down the search space with longer queries
 
     STATE.query = query;
 
-    STATE.apps = apps.filter ( app => isMatch ( app.name, query, true ) );
+    STATE.apps = apps.filter((app) => isMatch(app.name, query, true));
 
-    if ( STATE.apps.length === 0 ) {
-
+    if (STATE.apps.length === 0) {
       STATE.modal.icon = ICON_RED;
-
-    } else if ( STATE.apps.length === 1 ) {
-
+    } else if (STATE.apps.length === 1) {
       STATE.modal.icon = ICON_GREEN;
-
     } else {
-
       STATE.modal.icon = ICON_YELLOW;
-
     }
-
   }
-
 };
 
 const onTrigger = () => {
-
   const app = STATE.apps[0];
 
-  if ( !app ) return;
+  if (!app) return;
 
-  shell ( `open "${app.path}"` );
-
+  shell(`open "${app.path}"`);
 };
 
 const onEscape = () => {
-
-  onClose ();
-
+  onClose();
 };
 
 const onEnter = () => {
-
-  onTrigger ();
-  onClose ();
-
+  onTrigger();
+  onClose();
 };
 
-Key.on ( 'space', ['ctrl'], onToggle );
+Key.on("space", ["ctrl"], onToggle);
 
-setEventHandler ( 'windowDidFocus', onBlur);
+setEventHandler("windowDidFocus", onBlur);

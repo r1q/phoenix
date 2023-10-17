@@ -1,18 +1,15 @@
+/* ITERM */
 
-/* HYPER */
-
-setEventHandler ( 'windowDidOpen', magiciTermOpen );
+setEventHandler("windowDidOpen", magiciTermOpen);
 
 /* HANDLER */
 
-function magiciTermOpen ( window ) {
+function magiciTermOpen(window) {
+  if (!window.isNormal() || !window.isMain()) return;
 
-  if ( !window.isNormal () || !window.isMain () ) return;
+  const name = window.app().name();
 
-  const name = window.app ().name ();
+  if (!/iTerm/.test(name) || false) return;
 
-  if ( !/iTerm/.test ( name ) || false ) return;
-
-  setFrame ( 'bottom-left', window );
-
+  setFrame("bottom-left", window);
 }

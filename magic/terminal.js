@@ -1,18 +1,15 @@
-
 /* TERMINAL */
 
-setEventHandler ( 'windowDidOpen', magicTerminalOpen );
+setEventHandler("windowDidOpen", magicTerminalOpen);
 
 /* HANDLER */
 
-function magicTerminalOpen ( window ) {
+function magicTerminalOpen(window) {
+  if (!window.isNormal() || !window.isMain()) return;
 
-  if ( !window.isNormal () || !window.isMain () ) return;
+  const name = window.app().name();
 
-  const name = window.app ().name ();
+  if (!/Terminal/.test(name) || false) return;
 
-  if ( !/Terminal/.test ( name ) || false ) return;
-
-  setFrame ( 'bottom-left', window );
-
+  setFrame("bottom-left", window);
 }
